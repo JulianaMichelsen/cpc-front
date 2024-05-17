@@ -51,7 +51,32 @@
     </select>
   </div>
 
-  
+  <div class="mb-3 p-3 boxForm">
+    <label for="consumoMensalDeAlcool" class="form-label"><img src = "./assets/gasoline-icon.svg" alt="water icon" width="40px"/>Qual seu consumo médio de álcool por mês (Litros)</label>
+    <select class="form-select" aria-label="consumoMensalDeAlcool" id="consumoMensalDeAlcool">
+      <option selected>Selecione a opção que se assemelha com o seu consumo</option>
+      <option value="0">Não consumimos álcool</option>
+      <option value="10">Em média 10 litros mensais</option>
+      <option value="15">Em média 15 litros mensais</option>
+      <option value="20">Em média 20 litros mensais</option>
+      <option value="30">Em média 30 litros mensais</option>
+      <option value="50">Em média 50 litros mensais</option>
+    </select>
+  </div>
+
+  <div class="mb-3 p-3 boxForm">
+    <label for="consumoMensalDeGasolina" class="form-label"><img src = "./assets/gasoline-icon.svg" alt="water icon" width="40px"/>Qual seu consumo médio de gasolina por mês (Litros)</label>
+    <select class="form-select" aria-label="consumoMensalDeGasolina" id="consumoMensalDeGasolina">
+      <option selected>Selecione a opção que se assemelha com o seu consumo</option>
+      <option value="0">Não consumimos gasolina</option>
+      <option value="10">Em média 10 litros mensais</option>
+      <option value="15">Em média 15 litros mensais</option>
+      <option value="20">Em média 20 litros mensais</option>
+      <option value="30">Em média 30 litros mensais</option>
+      <option value="50">Em média 50 litros mensais</option>
+    </select>
+  </div>
+
   <button type="submit" class="btn btn-primary">Calcular</button>
   <hr>
   </div>
@@ -89,13 +114,16 @@ export default {
       const consumoAgua = parseInt(document.getElementById('consumoMensalDeAgua').value);
       const consumoEnergia = parseInt(document.getElementById('consumoMensalDeEnergia').value);
       const consumoCarne = parseInt(document.getElementById('consumoMensalDeCarne').value);
+      const consumoAlcool = parseInt(document.getElementById('consumoMensalDeAlcool').value);
+      const consumoGasolina = parseInt(document.getElementById('consumoMensalDeGasolina').value);
+      
 
       const data = {
         numero_consumo_agua: consumoAgua,
         numero_consumo_carne: consumoCarne,
         numero_consumo_energia: consumoEnergia,
-        numero_consumo_gasolina: 0, // Se não há um campo para gasolina, defina como necessário
-        numero_consumo_alcool: 0 // Se não há um campo para álcool, defina como necessário
+        numero_consumo_gasolina: consumoGasolina,
+        numero_consumo_alcool: consumoAlcool
       };
 
       try {
