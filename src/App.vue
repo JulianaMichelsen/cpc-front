@@ -4,10 +4,11 @@
     <h1>Projeto UPX - Facens - Análises de Sistemas</h1>
     </header>
     
-     
-    <img alt="Pegada de Carbono" src="./assets/banner.jpg" class="img-fluid">
-    <br><br>
-    <h2>Calculadora Pegada de Carbono</h2>
+    <div class="banner">
+      <!--<img alt="Pegada de Carbono" src="./assets/banner.jpg" class="img-fluid">-->
+
+    </div>
+    <h2 class="tit">Calculadora Pegada de Carbono</h2>
 
   <form @submit.prevent="calcularPegadaCarbono">
     <div class="container">
@@ -84,16 +85,22 @@
 </form>
     <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
 
-<div id="resultados">
+<div class="col-md-6 offset-md-3" v-if="resultados">
+<div class="resultados mb-3 p-3">
   <h2>Resultados:</h2>
-      <ul v-if="resultados">
+      <ul>
         <li>Emissão Água: {{ resultados['Emissão Água'] }}</li>
         <li>Emissão Carne: {{ resultados['Emissão Carne'] }}</li>
         <li>Emissão Energia: {{ resultados['Emissão Energia'] }}</li>
         <li>Emissão Gasolina: {{ resultados['Emissão Gasolina'] }}</li>
         <li>Emissão Álcool: {{ resultados['Emissão Álcool'] }}</li>
-        <li>TotalEmissao: {{ resultados['TotalEmissao'] }}</li>
+        <hr>
+        <li><h4>Total Emissão CO²: {{ resultados['TotalEmissao'] }}</h4></li>
+        
       </ul>
+      <div id="mensagem-erro" style="color: red;">{{ mensagemErro }}</div>
+      
+</div>
 </div>
 
   </div>
@@ -117,7 +124,6 @@ export default {
       const consumoAlcool = parseInt(document.getElementById('consumoMensalDeAlcool').value);
       const consumoGasolina = parseInt(document.getElementById('consumoMensalDeGasolina').value);
       
-
       const data = {
         numero_consumo_agua: consumoAgua,
         numero_consumo_carne: consumoCarne,
@@ -127,6 +133,7 @@ export default {
       };
 
       try {
+        
         const response = await fetch('http://127.0.0.1:8000/calcular/', {
           method: 'POST',
           headers: {
@@ -137,8 +144,23 @@ export default {
 
         const result = await response.json();
         this.resultados = result;
-        console.log(result); // Aqui você pode lidar com a resposta do servidor
+        this.resultados['TotalEmissao'] = this.resultados['TotalEmissao'].toFixed(2);
+        this.resultados['Emissão Água'] = this.resultados['Emissão Água'].toFixed(2); 
+        this.resultados['Emissão Carne'] = this.resultados['Emissão Carne'].toFixed(2); 
+        this.resultados['Emissão Energia'] = this.resultados['Emissão Energia'].toFixed(2); 
+        this.resultados['Emissão Gasolina'] = this.resultados['Emissão Gasolina'].toFixed(2);
+        this.resultados['Emissão Álcool'] = this.resultados['Emissão Álcool'].toFixed(2);
+         
+
+        console.log(this.total); // Aqui você pode lidar com a resposta do servidor
+        this.mensagemErro = '';
+        // Rolar a página até o final
+        this.$nextTick(() => {
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+
       } catch (error) {
+        this.mensagemErro = "Erro ao calcular a pegada de carbono. Por favor, tente novamente. ";
         console.error('Erro ao calcular a pegada de carbono:', error);
       }
     }
@@ -150,6 +172,8 @@ export default {
 body{
   padding: 0;
   margin: 0;
+  background-image: url(assets/banner.jpg);
+  background-size: cover;
 }
 #app {
   font-family: "Roboto Mono", Helvetica, Arial, sans-serif;
@@ -169,15 +193,31 @@ header{
   position: fixed;
   width: 100%;
 }
+.banner{
+  height: 150px;
+}
 
-h1{
-  
+.tit{
+color: #ffffff;
+text-shadow: #666 2px 2px;
 
 }
+
 
 .boxForm{
   background: #dddddd;
   border-radius: 10px;
+}
+
+.resultados{
+  background: #ddef53;
+  border-radius: 10px;
+}
+
+.resultados ul{
+  list-style: none;
+  text-align: left;
+
 }
 
 </style>
